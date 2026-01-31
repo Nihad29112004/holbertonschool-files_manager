@@ -2,9 +2,12 @@ import { createClient } from 'redis';
 import { promisify } from 'util';
 
 /**
- * RedisClient class for managing Redis operations.
+ * Class representing a Redis client.
  */
 class RedisClient {
+  /**
+   * Create a Redis client.
+   */
   constructor() {
     this.client = createClient();
     this.client.on('error', (err) => {
@@ -13,17 +16,17 @@ class RedisClient {
   }
 
   /**
-   * Checks if the connection to Redis is alive.
-   * @returns {boolean} true if alive, false otherwise.
+   * Check if the connection to Redis is alive.
+   * @returns {boolean} true if connection is successful, otherwise false.
    */
   isAlive() {
     return this.client.connected;
   }
 
   /**
-   * Gets the value of a key from Redis.
-   * @param {string} key - The key to retrieve.
-   * @returns {Promise<string|null>} The value associated with the key.
+   * Get the value stored in Redis for a given key.
+   * @param {string} key - The key to retrieve the value for.
+   * @returns {Promise<string|null>} The value stored in Redis.
    */
   async get(key) {
     const getAsync = promisify(this.client.get).bind(this.client);
@@ -31,10 +34,10 @@ class RedisClient {
   }
 
   /**
-   * Sets a key-value pair in Redis with an expiration.
-   * @param {string} key - The key to set.
+   * Store a value in Redis with an expiration time.
+   * @param {string} key - The key to store the value under.
    * @param {string|number} value - The value to store.
-   * @param {number} duration - Expiration time in seconds.
+   * @param {number} duration - The expiration time in seconds.
    * @returns {Promise<void>}
    */
   async set(key, value, duration) {
@@ -43,8 +46,8 @@ class RedisClient {
   }
 
   /**
-   * Deletes a key from Redis.
-   * @param {string} key - The key to delete.
+   * Remove the value stored in Redis for a given key.
+   * @param {string} key - The key to remove the value for.
    * @returns {Promise<void>}
    */
   async del(key) {
